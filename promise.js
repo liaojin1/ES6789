@@ -41,6 +41,8 @@ new Promise((resolve, reject) => {
 
 new Promise((resolve, reject) => {
     resolve('five');
+    reject('five reject');
+    console.log('123');
 }).then(
     res => {
         console.log(res);
@@ -48,4 +50,23 @@ new Promise((resolve, reject) => {
             resolve('five then')
         })
     }
-).then(res => console.log(res));
+).then(res => console.log(res)
+).catch(err => console.log(err));
+
+new Promise((resolve, reject) => {
+    resolve(3);
+    console.log(2);
+    reject(1);
+}).then(res=> {
+    console.log('a', res);
+    return new Promise((resolve, reject)=> {
+        reject(4);
+    })
+}).then(res => {
+    console.log('b', res);
+}).then(res => {
+    console.log('c', res);
+}).catch(err => console.log('err'+err));
+//2
+// a 3
+// err4
