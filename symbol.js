@@ -51,3 +51,18 @@ getnewArea(shape.triangle, {width:10, height:20});
 
 // 属性名的遍历，symbol作为属性名不会出现在for...in,for...of循环中，也不会被Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()返回。
 // 但是他也不私有属性有一个Object.getOwnPropertySymbols方法可以获取指定对象的所有symbol属性名。
+
+// Reflect.ownKeys方法可以返回常规键名+symbol键名
+// symbol.for() symbol.keyFor()
+// symbol.for()和symbol()这两种写法，都会生成新的symbol。区别是：
+// symbol.for()会被登记在全局环境中供搜索，后者不会。
+// symbol.for()不会每次调用就返回一个新的symbol值，而是会先检查给定的key是否存在，如果不存在才会返回一个新的symbol值
+Symbol.for("bar") === Symbol.for("bar")
+// true
+Symbol("bar") === Symbol("bar")
+// false
+let s1 = Symbol.for('foo');
+Symbol.keyFor(s1); // foo
+
+// 模块Singleton模式
+
