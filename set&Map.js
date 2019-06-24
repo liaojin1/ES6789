@@ -32,6 +32,10 @@ console.log(uniquea); // [ 3, 5, 2 ]
 // 实现并集，交集，差集
 let a = new Set([1,2,3]);
 let b = new Set([2,3,4]);
-console.log(new Set([...a, ...b])); // 
-console.log(new Set([...a].filter( data => b.has(data))));
-console.log(new Set([...a].filter(x => !b.has(x))));
+console.log(new Set([...a, ...b])); // Set { 1, 2, 3, 4 }
+console.log(new Set([...a].filter( data => b.has(data)))); // Set { 2, 3 }
+console.log(new Set([...a].filter(x => !b.has(x)))); // Set { 1 }
+
+// WeakSet
+
+
