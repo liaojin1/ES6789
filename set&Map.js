@@ -36,6 +36,7 @@ console.log(new Set([...a, ...b])); // Set { 1, 2, 3, 4 }
 console.log(new Set([...a].filter( data => b.has(data)))); // Set { 2, 3 }
 console.log(new Set([...a].filter(x => !b.has(x)))); // Set { 1 }
 
-// WeakSet
+// WeakSet也是不重复值的集合
+// WeakSet成员只能是对象
 
 

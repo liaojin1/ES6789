@@ -54,19 +54,17 @@ new Promise((resolve, reject) => {
 ).catch(err => console.log(err));
 
 new Promise((resolve, reject) => {
-    resolve(3);
-    console.log(2);
-    reject(1);
+    resolve('A');
 }).then(res=> {
-    console.log('a', res);
     return new Promise((resolve, reject)=> {
-        reject(4);
+        resolve('B');
     })
 }).then(res => {
-    console.log('b', res);
-}).then(res => {
-    console.log('c', res);
+    return new Promise((resolve, reject)=> {
+        resolve('C');
+    })
 }).catch(err => console.log('err'+err));
 //2
 // a 3
 // err4
+
