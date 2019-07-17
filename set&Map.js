@@ -38,5 +38,18 @@ console.log(new Set([...a].filter(x => !b.has(x)))); // Set { 1 }
 
 // WeakSet也是不重复值的集合
 // WeakSet成员只能是对象
+// WeakSet是不可遍历的，因为WeakSet中的对象都是弱引用，垃圾回收机制不考虑WeakSet对该对象的引用
+// 如果其他对象都不引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存。不考虑该对象还在WeakSet中。
+// 由于 WeakSet 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，
+// 而垃圾回收机制何时运行是不可预测的，因此 ES6 规定 WeakSet 不可遍历。
 
-
+// Map转换为数组
+const map = new Map([
+    [1, 'one'],
+    [2, 'two'],
+    [3, 'three']
+]);
+console.log([...map]);//[ [ 1, 'one' ], [ 2, 'two' ], [ 3, 'three' ] ]
+[...map.keys()];// [1, 2, 3]
+[...map.values()];// ['one', 'two', 'three']
+[...map.entries()];// [[1,'one'], [2, 'two'], [3, 'three']]
