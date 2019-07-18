@@ -33,3 +33,20 @@ var f = function *(){
   console.log(b.next());
   console.log(b.next(5));
   console.log(b.next(6));
+/** 分析
+next() 传参是对yield整体的传参，否则yield类似于return
+A组
+{ value: 6, done: false }
+{ value: NaN, done: false }
+{ value: NaN, done: true }
+x恒为5，所以第一次调用传空没问题，可得到对应的第一个yield返回值:yield (x + 1)
+第二次调用，无参数传入，所以y为NaN(2* undefined)，自然得不到z
+第三次调用同上分析
+
+B组
+{ value: 7, done: false }
+{ value: 3.3333333333333335, done: false }
+{ value: 22, done: true }
+x恒为5，所以第一次调用传空没问题，可得到对应的第一个yield返回值:yield (x + 1)
+第二次调用，传入12，所以y为24(yield (x + 1)=入参)，得到第二个yield: yield (y / 3)=8
+第三次调用同上分析,得到最后的z值并return=42*/ 
