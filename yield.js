@@ -50,3 +50,97 @@ B组
 x恒为5，所以第一次调用传空没问题，可得到对应的第一个yield返回值:yield (x + 1)
 第二次调用，传入12，所以y为24(yield (x + 1)=入参)，得到第二个yield: yield (y / 3)=8
 第三次调用同上分析,得到最后的z值并return=42*/ 
+
+// yield*表达式，作为解决办法，用来在一个 Generator 函数里面执行另一个 Generator 函数。
+function* foo() {
+    yield 'a';
+    yield 'b';
+}
+  
+function* bar() {
+    yield 'x';
+    // 手动遍历 foo()
+    for (let i of foo()) {
+      console.log(i);
+    }
+    yield 'y';
+}
+  
+for (let v of bar()){
+    console.log(v);
+}
+// x
+// a
+// b
+// y
+
+//简写
+function* bar() {
+    yield 'x';
+    yield* foo();
+    yield 'y';
+}
+
+// 嵌套数组的所有成员取出
+function* iterTree(tree) {
+    if (Array.isArray(tree)) {
+      for(let i=0; i < tree.length; i++) {
+        yield* iterTree(tree[i]);
+      }
+    } else {
+      yield tree;
+    }
+  }
+  const tree = [ 'a', ['b', 'c'], ['d', 'e'] ];
+  
+  for(let x of iterTree(tree)) {
+    console.log(x);
+  }
+  // a
+  // b
+  // c
+  // d
+  // e
+  [...iterTree(tree)];// ["a", "b", "c", "d", "e"]嵌套数组的平铺
+
+
+
+
+function Tree(left, root, right) {
+    this.left = left;
+    this.root = root;
+    this.right = right;
+}
+//   实现二叉树的中序遍历
+function* inorder(t) {
+    if(t) {
+        yield* inorder(t.left);
+        yield t.root;
+        yield* inorder(t.right);
+    }
+}
+//   实现二叉树的先序遍历
+function* firstInorder(t) {
+    if(t) {
+        yield t.root;
+        yield* firstInorder(t.left);
+        yield* firstInorder(t.right);
+    }
+}
+function make(arr) {
+    // 判断是是否为叶子节点
+    if(arr.length == 1) return new Tree(null, arr[0], null);
+    return new Tree(make(arr[0]), arr[1], make(arr[2]));
+}
+let tree = make([[['a'], 'b', ['c']], 'd', [['e'], 'f', ['g']]]);
+// 遍历二叉树
+var result = [];
+for (let node of inorder(tree)) {
+  result.push(node);
+}
+var resultFirst = [];
+for (let i of firstInorder(tree)) {
+    resultFirst.push(i);
+}
+console.log(resultFirst);
+console.log(result);
