@@ -43,7 +43,57 @@ console.log(g().a); //undefined
 // 也不可以使用new去创建
 
 // 解决：使generator函数既可以使用this又可以使用next
-function* F() {
+function* gen() {
     this.a = 'a';
-    this.b = 'b';
+    yield this.b = 'b';
+    yield this.c = 'c';
+}
+function F() {
+    return gen.call(gen.prototype);
+}
+var f = F.call(F.prototype);
+f.next();
+f.next();
+f.next();
+f.a;
+f.b;
+f.c;
+
+// generator与状态机
+function* f() {
+    while (true) {
+        console.log('Tick!');
+        yield;
+        console.log('Tock!');
+        yield;
+    }
+}
+
+// generator与协程（协作的线程）
+// 协程与子例程差异
+// 1.子例程采用堆栈式，后进先出，只用当前调用的子函数全部执行完毕才会执行父函数
+// 2.协程多个线程（单线程情况下多个函数）可以并行执行，但是只有一个线程（或函数）处于正在运行的状态，其他线程（或函数）都处于暂停态，线程（或函数）之间可以交换执行权。
+// 一个线程（或函数）执行到一半，可以暂停执行，将执行权交给另一个线程（或函数），等到稍后收回执行权的时候，再恢复执行。
+// 这种可以并行执行、交换执行权的线程（或函数），就称为协程。
+
+// 在内存中子例程只调用一个栈，而协程是同时调用多个栈，但只有一个栈在运行的状态。以多占内存为代价实现多任务并行。
+
+// 协程与普通线程的差距
+// 相同点：
+// 协程适合用于多任务运行的环境。在这个意义上，它与普通的线程很相似，都有自己的执行上下文、可以分享全局变量。
+// 差异：
+// 同一时间可以有多个线程处于运行状态，但是运行的协程只能有一个，其他协程都处于暂停状态。
+// 普通的线程是抢先式的，到底哪个线程优先得到资源，必须由运行环境决定，但是协程是合作式的，执行权由协程自己分配。
+
+// 应用
+// 异步操作的同步化表达(处理异步操作，改写回调函数)
+function* numbers() {
+    let file = new FileReader("test.text");
+    try {
+        while(!file.eof) {
+            yield parseInt(file.readLine(), 10);
+        }
+    } finally {
+        file.close();
+    }
 }
