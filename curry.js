@@ -14,6 +14,11 @@ function mutil(a) {
 const curry = (fn, n = fn.length, args = []) => 
 n === 0 ? fn(...args) : (...args1) => curry(fn, n - args1.length, [...args, ...args1]);
 
+var arr = [1,2,3], arr2 = [3,3,45];
+console.log([...arr, ...arr2]); //[ 1, 2, 3, 3, 3, 45 ]
+function add(a,b){return a+b;};console.log(add.length); // 2
+// arguments.callee返回正在执行的对象
+
 var curry = function(fn) {
     var args = [].slice.call(arguments, 1); //将伪数组转化为数组
     return function () {
@@ -24,18 +29,61 @@ var curry = function(fn) {
 
 var arr = [1,2,3,4];
 console.log([].slice.call(arr, 1)); // [2,3,4]
-console.log(arr.concat([].slice.call()))
+console.log([8,9].concat([].slice.call(arr))); // [ 8, 9, 1, 2, 3, 4 ]
 
 // 实现add(1)(2)(3)(4)//10
-function currying(fn) {
-    var curarr = [];
+function currying(fn){
+    var allArgs = [];
     return function next(){
         var args = [].slice.call(arguments);
-        if(args.length > 0) {
-            curarr = curarr.concat(args);
+        if(args.length > 0){
+            allArgs = allArgs.concat(args);
             return next;
-        } else {
-            return fn.apply(null, curarr);
+        }
+        // 字符类型
+        next.toString = function(){
+            return fn.apply(null, allArgs);
+        };
+        // 数值类型
+        next.valueOf = function(){
+            return fn.apply(null, allArgs);
+        }
+        return next;
+    } 
+}
+var add = currying(function(){
+    var sum = 0;
+    for(var i = 0; i < arguments.length; i++){
+        sum += arguments[i];
+    }
+    return sum;
+});
+console.log(add(1)(2)(3)(4).valueOf());
+
+
+function currying() {
+    var arg = [].slice.call(arguments); // 将传入参数转为数组
+    var _fn = function() {
+        arg = arg.concat([].slice.call(arguments));
+        return _fn;
+    }
+    _fn.valueOf = function () {
+        return arg.reduce(function(i, j){ return i + j;});
+    }
+    return _fn;
+}
+console.log(currying(1)(2)(3).valueOf());
+
+function curry(fn) {
+    var arr = [];
+    return function _fn() {
+        var args = [].slice.call(arguments);
+        if(args.length == 0) return fn(...args);
+        else {
+            arr = arr.concat(args);
+            return _fn;
         }
     }
 }
+
+//  https://www.cnblogs.com/lhh520/p/10191168.html
