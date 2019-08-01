@@ -87,3 +87,24 @@ function curry(fn) {
 }
 
 //  https://www.cnblogs.com/lhh520/p/10191168.html
+
+
+function curry(fn) {
+    function _c(restNum, argsList) {
+        console.log('.............');
+        console.log(restNum);
+        console.log(argsList);
+      return restNum === 0 ?
+        fn.apply(null, argsList) :
+        function(x) {
+            console.log('---------');
+            console.log(x);
+          return _c(restNum - 1, argsList.concat(x));
+        };
+    }
+    return _c(fn.length, []);
+  }
+  var plus = curry(function(a, b) {
+    return a + b;
+  });
+ curry(1)(2)(3);
