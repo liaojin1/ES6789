@@ -6,3 +6,12 @@
 
 Object.getPrototypeOf(); // 从子类上获取父类
 Object.getPrototypeOf(ColorPoint) === Point // true,可以判断一个类是否继承了另一个类
+
+
+// super虽然代表了父类A的构造函数，但是返回的是子类B的实例，即super内部的this指的是B的实例
+class A{}//类中默认存在constructor方法
+class B extends A{
+    constructor() {
+        super();// super()相当于 A.prototype.constructor.call(this)
+    }
+}
