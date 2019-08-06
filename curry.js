@@ -108,3 +108,18 @@ function curry(fn) {
     return a + b;
   });
  curry(1)(2)(3);
+
+
+
+//  函数柯里化
+function curry(fn) {
+    var res = [];
+    return function _fn() {
+        if (fn.length > 0) {
+            res = res.concat([].slice.call(arguments));
+            return _fn;
+        } else {
+            return _fn(...[].slice.call(arguments));
+        }
+    }
+}
