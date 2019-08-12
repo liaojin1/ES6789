@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function test(data) {
+            console.log(data.name);
+            console.log(data.age);
+        }
+        var url = "www.a.com?data=1&callback=test";
+        var script = document.createElement('script');
+        script.setAttribute('src', url);
+        document.getElementsByTagName('head')[0].appendChild(script);
+    </script>
+</body>
+
+</html>

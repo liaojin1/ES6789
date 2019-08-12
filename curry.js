@@ -2,7 +2,7 @@
 mutil(2)(3)(4); // 24
 function mutil(a) {
     return function (b) {
-        return function (c){
+        return function (c) {
             return a * b * c;
         }
     }
@@ -11,49 +11,49 @@ function mutil(a) {
 // 1.参数复用
 // 2.提前返回
 // 3.延迟执行
-const curry = (fn, n = fn.length, args = []) => 
-n === 0 ? fn(...args) : (...args1) => curry(fn, n - args1.length, [...args, ...args1]);
+const curry = (fn, n = fn.length, args = []) =>
+    n === 0 ? fn(...args) : (...args1) => curry(fn, n - args1.length, [...args, ...args1]);
 
-var arr = [1,2,3], arr2 = [3,3,45];
+var arr = [1, 2, 3], arr2 = [3, 3, 45];
 console.log([...arr, ...arr2]); //[ 1, 2, 3, 3, 3, 45 ]
-function add(a,b){return a+b;};console.log(add.length); // 2
+function add(a, b) { return a + b; }; console.log(add.length); // 2
 // arguments.callee返回正在执行的对象
 
-var curry = function(fn) {
+var curry = function (fn) {
     var args = [].slice.call(arguments, 1); //将伪数组转化为数组
     return function () {
         var newArgs = args.concat([].slice.call(arguments));
         return fn.apply(this, newArgs);
     }
-} 
+}
 
-var arr = [1,2,3,4];
+var arr = [1, 2, 3, 4];
 console.log([].slice.call(arr, 1)); // [2,3,4]
-console.log([8,9].concat([].slice.call(arr))); // [ 8, 9, 1, 2, 3, 4 ]
+console.log([8, 9].concat([].slice.call(arr))); // [ 8, 9, 1, 2, 3, 4 ]
 
 // 实现add(1)(2)(3)(4)//10
-function currying(fn){
+function currying(fn) {
     var allArgs = [];
-    return function next(){
+    return function next() {
         var args = [].slice.call(arguments);
-        if(args.length > 0){
+        if (args.length > 0) {
             allArgs = allArgs.concat(args);
             return next;
         }
         // 字符类型
-        next.toString = function(){
+        next.toString = function () {
             return fn.apply(null, allArgs);
         };
         // 数值类型
-        next.valueOf = function(){
+        next.valueOf = function () {
             return fn.apply(null, allArgs);
         }
         return next;
-    } 
+    }
 }
-var add = currying(function(){
+var add = currying(function () {
     var sum = 0;
-    for(var i = 0; i < arguments.length; i++){
+    for (var i = 0; i < arguments.length; i++) {
         sum += arguments[i];
     }
     return sum;
@@ -63,12 +63,12 @@ console.log(add(1)(2)(3)(4).valueOf());
 
 function currying() {
     var arg = [].slice.call(arguments); // 将传入参数转为数组
-    var _fn = function() {
+    var _fn = function () {
         arg = arg.concat([].slice.call(arguments));
         return _fn;
     }
     _fn.valueOf = function () {
-        return arg.reduce(function(i, j){ return i + j;});
+        return arg.reduce(function (i, j) { return i + j; });
     }
     return _fn;
 }
@@ -78,7 +78,7 @@ function curry(fn) {
     var arr = [];
     return function _fn() {
         var args = [].slice.call(arguments);
-        if(args.length == 0) return fn(...args);
+        if (args.length == 0) return fn(...args);
         else {
             arr = arr.concat(args);
             return _fn;
@@ -94,20 +94,20 @@ function curry(fn) {
         console.log('.............');
         console.log(restNum);
         console.log(argsList);
-      return restNum === 0 ?
-        fn.apply(null, argsList) :
-        function(x) {
-            console.log('---------');
-            console.log(x);
-          return _c(restNum - 1, argsList.concat(x));
-        };
+        return restNum === 0 ?
+            fn.apply(null, argsList) :
+            function (x) {
+                console.log('---------');
+                console.log(x);
+                return _c(restNum - 1, argsList.concat(x));
+            };
     }
     return _c(fn.length, []);
-  }
-  var plus = curry(function(a, b) {
+}
+var plus = curry(function (a, b) {
     return a + b;
-  });
- curry(1)(2)(3);
+});
+curry(1)(2)(3);
 
 
 
@@ -123,3 +123,6 @@ function curry(fn) {
         }
     }
 }
+
+
+
