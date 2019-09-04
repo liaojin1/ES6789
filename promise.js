@@ -92,3 +92,11 @@ console.log('同步函数');
 (async () => f())()
 .then()
 .catch()
+
+// 
+new Promise((resolve, reject) => {
+    reject();
+}).then(res => console.log('res'),
+        reject => console.log('reject')
+).catch(e => console.log('catch')
+).finally
